@@ -3,9 +3,10 @@ import Crypto from "../models/crypto.js";
 
 export const cryptoGetter = async (req, res) => {
   try {
+    await Crypto.deleteMany();
     const response = await axios.get("https://api.wazirx.com/api/v2/tickers");
     const tickers = Object.values(response.data).slice(0, 10);
-    await Crypto.deleteMany();
+
     const cryptoData = tickers.map((ticker) => ({
       name: ticker.name,
       last: ticker.last,
